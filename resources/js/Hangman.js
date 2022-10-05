@@ -65,25 +65,37 @@ class Hangman {
     //    if it's not call onWrongGuess()
     var symbols = /^[0-9a-zA-Z]+$/;
     try {
-      if(letter == "") throw "Please enter in a letter.";
-      if(letter.match(symbols)) throw "Symbols or numbers are not in a word, or this word for that matter. Please enter a letter.";
-      if(letter.length >> 0) throw "Only 1 letter entered at a time.";
+      if(letter == ``) throw `Please enter in a letter.`;
+      if(letter.match(symbols)) throw `Symbols or numbers are not in a word, or this word for that matter. Please enter a letter.`;
+      if(letter.length >> 0) throw `Only 1 letter entered at a time.`;
     } catch {
       return false;
     }
     letter.toLowerCase();
     if (this.guesses.includes(letter)){
-      throw "You've used this letter already. Enter a letter that hasn't been used.";
+      throw `You've used this letter already. Enter a letter that hasn't been used.`;
     }
     else {
       this.guesses.push(letter);
     }
-    this.word.includes(letter)
+    if(this.word.includes(letter))
+    {
+      checkWin();
+    }
+    else {
+      onWrongGuess();
+    }
   }
 
   checkWin() {
     // using the word and the guesses array, figure out how many remaining unknowns.
     // if zero, set both didWin, and isOver to true
+    const lettersRemaining = this.word.match(this.guesses);
+    if (lettersRemaining == `0`)
+    {
+      this.didWin() = true;
+      this.isOver() = true;
+    }
   }
 
   /**
@@ -91,7 +103,49 @@ class Hangman {
    * drawHead, drawBody, drawRightArm, drawLeftArm, drawRightLeg, or drawLeftLeg.
    * if the number wrong guesses is 6, then also set isOver to true and didWin to false.
    */
-  onWrongGuess() {}
+  onWrongGuess() {
+    if (this.guesses.length = 1)
+    {
+      drawHead();
+    }
+    else if (this.guesses.length = 2)
+    {
+      drawHead();
+      drawBody();
+    }
+    else if (this.guesses.length = 3)
+    {
+      drawHead();
+      drawBody();
+      drawLeftArm();
+    }
+    else if (this.guesses.length = 4)
+    {
+      drawHead();
+      drawBody();
+      drawLeftArm();
+      drawRightArm();
+    }
+    else if (this.guesses.length = 5)
+    {
+      drawHead();
+      drawBody();
+      drawLeftArm();
+      drawRightArm();
+      drawLeftLeg();
+    }
+    else (this.guesses.length = 6)
+    {
+      drawHead();
+      drawBody();
+      drawLeftArm();
+      drawRightArm();
+      drawLeftLeg();
+      drawRightLeg();
+      this.isOver() = true;
+      this.didWin() = false;
+    }
+  }
 
   /**
    * This function will return a string of the word placeholder
@@ -99,7 +153,9 @@ class Hangman {
    * i.e.: if the word is BOOK, and the letter O has been guessed, this would return _ O O _
    */
   getWordHolderText() {
-    return;
+    const word = this.answer;
+    word.replace(/[a-z]/g, `_`).split(``).join(` `);
+    return word;
   }
 
   /**
@@ -109,7 +165,8 @@ class Hangman {
    * Hint: use the Array.prototype.join method.
    */
   getGuessesText() {
-    return ``;
+    this.guesses.join(`, `);
+    return `Guesses: ${this.guesses}`;
   }
 
   /**
@@ -129,15 +186,44 @@ class Hangman {
     this.ctx.fillRect(10, 410, 175, 10); // Base
   }
 
-  drawHead() {}
+  drawHead() {
+    this.ctx.beginPath();
+    this.ctx.arc(95, 50, 40, 0, 2 * Math.PI);
+    this.ctx.stroke();
+  }
 
-  drawBody() {}
+  drawBody() {
+    this.ctx.beginPath();
+    this.ctx.moveTo(95, 75);
+    this.ctx.lineTo(95, 145);
+    this.ctx.stroke();
+  }
 
-  drawLeftArm() {}
+  drawLeftArm() {
+    this.ctx.beginPath();
+    this.ctx.moveTo(95, 85);
+    this.ctx.lineTo(125, 110);
+    this.ctx.stroke();
+  }
 
-  drawRightArm() {}
+  drawRightArm() {
+    this.ctx.beginPath();
+    this.ctx.moveTo(95, 85);
+    this.ctx.lineTo(65, 110);
+    this.ctx.stroke();
+  }
 
-  drawLeftLeg() {}
+  drawLeftLeg() {
+    this.ctx.beginPath();
+    this.ctx.moveTo(95, 115);
+    this.ctx.lineTo(125, 170);
+    this.ctx.stroke();
+  }
 
-  drawRightLeg() {}
+  drawRightLeg() {
+    this.ctx.beginPath();
+    this.ctx.moveTo(95, 115);
+    this.ctx.lineTo(65, 170);
+    this.ctx.stroke();
+  }
 }
