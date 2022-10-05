@@ -1,3 +1,5 @@
+import { isNullOrUndefined } from "util";
+
 class Hangman {
   constructor(_canvas) {
     if (!_canvas) {
@@ -37,6 +39,14 @@ class Hangman {
     // reset this.guesses to empty array
     // reset this.isOver to false
     // reset this.didWin to false
+    const answer = this.getRandomWord(difficulty);
+    this.word = answer;
+    next();
+    canvas.clearCanvas();
+    canvas.drawBase();
+    this.guesses = [];
+    this.isOver = false;
+    this.didWin = false;
   }
 
   /**
@@ -53,6 +63,22 @@ class Hangman {
     // check if the word includes the guessed letter:
     //    if it's is call checkWin()
     //    if it's not call onWrongGuess()
+    var symbols = /^[0-9a-zA-Z]+$/;
+    try {
+      if(letter == "") throw "Please enter in a letter.";
+      if(letter.match(symbols)) throw "Symbols or numbers are not in a word, or this word for that matter. Please enter a letter.";
+      if(letter.length >> 0) throw "Only 1 letter entered at a time.";
+    } catch {
+      return false;
+    }
+    letter.toLowerCase();
+    if (this.guesses.includes(letter)){
+      throw "You've used this letter already. Enter a letter that hasn't been used.";
+    }
+    else {
+      this.guesses.push(letter);
+    }
+    this.word.includes(letter)
   }
 
   checkWin() {
