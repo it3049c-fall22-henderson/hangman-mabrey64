@@ -1,4 +1,4 @@
-import { isNullOrUndefined } from "util";
+//import { isNullOrUndefined } from "util";
 
 class Hangman {
   constructor(_canvas) {
@@ -19,12 +19,14 @@ class Hangman {
    * The results is a json object that looks like this:
    *    { word: "book" }
    * */
-  getRandomWord(difficulty) {
+   getRandomWord(difficulty) {
+    debugger
     return fetch(
       `https://hangman-micro-service-bpblrjerwh.now.sh?difficulty=${difficulty}`
     )
       .then((r) => r.json())
       .then((r) => r.word);
+      debugger
   }
 
   /**
@@ -40,6 +42,7 @@ class Hangman {
     // reset this.isOver to false
     // reset this.didWin to false
     const answer = this.getRandomWord(difficulty);
+    debugger
     this.word = answer;
     next();
     canvas.clearCanvas();
@@ -63,7 +66,7 @@ class Hangman {
     // check if the word includes the guessed letter:
     //    if it's is call checkWin()
     //    if it's not call onWrongGuess()
-    var symbols = /^[0-9a-zA-Z]+$/;
+    const symbols = /^[a-zA-Z]+$/;
     try {
       if(letter == ``) throw `Please enter in a letter.`;
       if(letter.match(symbols)) throw `Symbols or numbers are not in a word, or this word for that matter. Please enter a letter.`;

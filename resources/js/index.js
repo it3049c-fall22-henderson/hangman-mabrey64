@@ -34,8 +34,8 @@ let game = new Hangman(canvas);
     game.start(selectedDifficulty);
     startWrapper.classList.remove(`d-none`);
     gameWrapper.classList.add(`d-none`);
-    // wordHolderText = game.getWordHolderText();
-    // guessesText = game.getGuessesText();
+    wordHolderText = game.getWordHolderText();
+    guessesText = game.getGuessesText();
     event.preventDefault();
   });
 
@@ -53,7 +53,22 @@ let game = new Hangman(canvas);
   //      3. show the resetGame button
   // if the game is won or lost, show an alert.
   guessForm.addEventListener(`submit`, function (e) {
-    const guess = guessInput
+    const input = guessInput.value;
+    game.guess(input);
+    game.getWordHolderText() = wordHolderText;
+    game.getGuessesText() = guessesText;
+    guessInput.value = "";
+    if (game.isOver() == true){
+      document.getElementById(`guessInput`).disabled = true;
+      document.getElementById(`guessSubmitButton`).disabled = true;
+      document.getElementById(`resetGame`).style.visibility = `visible`;
+    }
+    if (game.didWin() == true){
+      alert(`You have won the game!`)
+    }
+    else {
+      alert(`Better luck next time...`)
+    }
   });
 
   // add a click Event Listener to the resetGame button
@@ -63,7 +78,8 @@ let game = new Hangman(canvas);
     startWrapper.classList.add(`d-none`);
     gameWrapper.classList.remove(`d-none`);
   });
+
 } catch (error) {
-  console.error(error);
+  //console.error(error);
   alert(error);
 }
